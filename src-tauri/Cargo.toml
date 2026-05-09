@@ -26,12 +26,12 @@ serde_json = "1"
 arboard = { version = "3.3", features = ["wayland-data-control"] }
 
 tokio = { version = "1", features = ["time", "net", "sync", "macros", "process"] }
-tokio-tungstenite = "0.29"
+tokio-tungstenite = { version = "0.29", features = ["native-tls"] }
 futures-util = { version = "0.3", default-features = false, features = ["sink"] }
 
-specta = { version = "=2.0.0-rc.24" }
-tauri-specta = { version = "=2.0.0-rc.24", features = ["typescript"] }
-specta-typescript = { version = "=0.0.11" }
+specta = { version = "=2.0.0-rc.25" }
+tauri-specta = { version = "=2.0.0-rc.25", features = ["typescript"] }
+specta-typescript = { version = "=0.0.12" }
 
 png = "0.17"
 base64 = "0.22"

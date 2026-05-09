@@ -13,6 +13,7 @@ mod schema;
 mod shortcuts;
 mod sync;
 mod tray;
+pub mod websocket;
 mod window;
 
 use clipboard::ClipboardManager;
@@ -22,6 +23,7 @@ use sync::SyncState;
 use tauri::Manager;
 use tauri_plugin_deep_link::DeepLinkExt;
 use tauri_plugin_notification::NotificationExt;
+use websocket::WebSocketState;
 use window::main_window;
 
 fn main() {
@@ -60,6 +62,7 @@ fn main() {
         .manage(MonitorState::new())
         .manage(SyncState::new())
         .manage(shortcuts::ToggleShortcut::default())
+        .manage(WebSocketState::new())
         .setup(move |app| {
             #[cfg(any(target_os = "linux", all(debug_assertions, windows)))]
             app.deep_link().register_all()?;

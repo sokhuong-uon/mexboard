@@ -21,6 +21,7 @@ pub use window::*;
 pub use keyring::init as init_keyring;
 
 use crate::main_window;
+use crate::websocket::*;
 use tauri::{AppHandle, Manager};
 use tauri_specta::{collect_commands, Builder};
 
@@ -64,6 +65,10 @@ pub fn create_command_builder() -> Builder<tauri::Wry> {
         get_session_token,
         save_session_token,
         delete_session_token,
+        is_websocket_connected,
+        connect_websocket,
+        disconnect_websocket,
+        send_websocket_message,
     ])
 }
 
