@@ -8,7 +8,7 @@ import {
   FieldLabel,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { GalleryVerticalEnd } from "lucide-react";
+import { GalleryVerticalEnd, Loader2 } from "lucide-react";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -17,6 +17,7 @@ import {
   MagicLinkSignInSchema,
   magicLinkSignInSchema,
 } from "@/features/auth/schema/magic-link-sign-in-schema";
+import { useState } from "react";
 
 export function MagicLinkSignInForm({
   className,
@@ -29,8 +30,12 @@ export function MagicLinkSignInForm({
     },
   });
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const onSubmit = async (values: MagicLinkSignInSchema) => {
     try {
+      setIsSubmitting(true);
+
       const { data, error } = await authClient.signIn.magicLink(
         {
           email: values.email,
@@ -50,7 +55,9 @@ export function MagicLinkSignInForm({
       console.log("magic link status:", data.status);
 
       form.reset();
-    } catch (error) {}
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -91,7 +98,14 @@ export function MagicLinkSignInForm({
           />
 
           <Field>
-            <Button type="submit">Send Magic Link</Button>
+            <Button
+              type="submit"
+              className="flex gap-2 cursor-pointer"
+              disabled={isSubmitting}
+            >
+              {isSubmitting && <Loader2 className="size-4 animate-spin" />}
+              <div>Send a login link</div>
+            </Button>
           </Field>
         </FieldGroup>
       </form>

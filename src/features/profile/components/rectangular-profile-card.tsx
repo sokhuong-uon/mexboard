@@ -4,9 +4,11 @@ import { signOut } from "@/features/auth/lib/sign-out";
 import { useEffect, useState } from "react";
 import { CustomerState } from "@polar-sh/sdk/models/components/customerstate";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { LogOut } from "lucide-react";
+import { Loader2, LogOut } from "lucide-react";
 
 export function RectangularProfileCard() {
+  const [isSigningOut, setIsSigningOut] = useState(false);
+
   const { data: session } = authClient.useSession();
 
   const [customerState, setCustomerState] = useState<CustomerState | null>(
@@ -25,6 +27,12 @@ export function RectangularProfileCard() {
     getCustomerState();
   }, [session]);
 
+  const handleSignOut = async () => {
+    setIsSigningOut(true);
+    await signOut();
+    setIsSigningOut(false);
+  };
+
   return (
     <div className="flex items-center gap-2 w-full p-2 bg-muted/50">
       <Avatar size="lg">
@@ -42,8 +50,14 @@ export function RectangularProfileCard() {
         <p className="text-muted-foreground">{customerState?.email}</p>
       </div>
 
-      <Button variant="ghost" onClick={signOut} className="ml-auto">
-        <LogOut className="w-10" />
+      <Button
+        variant="ghost"
+        onClick={handleSignOut}
+        className="ml-auto cursor-pointer"
+        disabled={isSigningOut}
+      >
+        {isSigningOut && <Loader2 className="size-4 animate-spin" />}
+        {!isSigningOut && <LogOut className="size-4" />}
       </Button>
     </div>
   );
