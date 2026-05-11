@@ -1,3 +1,10 @@
+# [1.23.0](https://github.com/sokhuong-uon/mexboard/compare/v1.22.1...v1.23.0) (2026-05-11)
+
+
+### Features
+
+* add spining icon for when sending magic link and signing out ([d7621d4](https://github.com/sokhuong-uon/mexboard/commit/d7621d4dd4d53abf82c08a3862b24aefcb47e1b0))
+
 ## [1.22.1](https://github.com/sokhuong-uon/mexboard/compare/v1.22.0...v1.22.1) (2026-05-11)
 
 
