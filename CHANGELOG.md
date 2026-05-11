@@ -1,3 +1,10 @@
+## [1.22.1](https://github.com/sokhuong-uon/mexboard/compare/v1.22.0...v1.22.1) (2026-05-11)
+
+
+### Bug Fixes
+
+* also show plans and pricing when customerState is null ([deab986](https://github.com/sokhuong-uon/mexboard/commit/deab986f3dc7990bf7a21fb3ca769fb79770dbf0))
+
 # [1.22.0](https://github.com/sokhuong-uon/mexboard/compare/v1.21.2...v1.22.0) (2026-05-10)
 
 
