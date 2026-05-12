@@ -1,7 +1,7 @@
 import { fetch as tauriFetch } from "@tauri-apps/plugin-http"
 import { createAuthClient } from "better-auth/react";
 import { magicLinkClient } from "better-auth/client/plugins"
-import { tokenStore } from "@/features/auth/stores/token-store"
+import { authBearerTokenStore } from "@/features/auth/stores/auth-bearer-token-store"
 import { polarClient } from "@polar-sh/better-auth/client"
 
 export const authClient = createAuthClient({
@@ -11,14 +11,14 @@ export const authClient = createAuthClient({
   fetchOptions: {
     auth: {
       type: "Bearer",
-      token: () => tokenStore.get() ?? "",
+      token: () => authBearerTokenStore.get() ?? "",
     },
 
     customFetchImpl: async (input, init) => {
       const res = await tauriFetch(input, { ...init, maxRedirections: 0 })
 
       const newToken = res.headers.get("set-auth-token")
-      if (newToken) await tokenStore.set(newToken)
+      if (newToken) await authBearerTokenStore.set(newToken)
 
       return res
     },

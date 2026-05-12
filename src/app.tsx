@@ -28,13 +28,13 @@ function isEditableTarget(target: EventTarget | null): boolean {
   return tag === "INPUT" || tag === "TEXTAREA" || target.isContentEditable;
 }
 
-import { tokenStore } from "@/features/auth/stores/token-store";
+import { authBearerTokenStore } from "@/features/auth/stores/auth-bearer-token-store";
 
 function App() {
   useSystemTheme();
   const [activeTab, setActiveTab] = useState<TabValue>("clipboard");
   const { hotkeys } = useHotkeysConfig();
-  console.log("token: ", tokenStore.get());
+  console.log("token: ", authBearerTokenStore.get());
 
   useEffect(() => {
     const unlisten = onOpenUrl((urls) => {
@@ -119,10 +119,7 @@ function App() {
           keepMounted
           className="flex flex-col overflow-hidden min-h-0 data-hidden:hidden"
         >
-          <GifView
-            onPaste={pasteKlipy}
-            isActive={activeTab === "gif"}
-          />
+          <GifView onPaste={pasteKlipy} isActive={activeTab === "gif"} />
         </TabsContent>
 
         <TabsContent

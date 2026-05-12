@@ -3,7 +3,10 @@ import ReactDOM from "react-dom/client";
 import { ThemeProvider } from "next-themes";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import App from "@/app";
-import { tokenStore, useTokenStore } from "@/features/auth/stores/token-store";
+import {
+  authBearerTokenStore,
+  useAuthBearerTokenStore,
+} from "@/features/auth/stores/auth-bearer-token-store";
 import { authClient } from "@/features/auth/lib/better-auth-client";
 
 const queryClient = new QueryClient({
@@ -15,13 +18,13 @@ const queryClient = new QueryClient({
   },
 });
 
-useTokenStore.subscribe((state, prev) => {
+useAuthBearerTokenStore.subscribe((state, prev) => {
   if (state.token !== prev.token) {
     void authClient.getSession();
   }
 });
 
-await tokenStore.hydrate();
+await authBearerTokenStore.hydrate();
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>

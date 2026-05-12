@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { commands } from "@/bindings";
 
-type TokenState = {
+type AuthBearerTokenState = {
   token: string | null;
   hydrated: boolean;
   hydrate: () => Promise<void>;
@@ -9,7 +9,7 @@ type TokenState = {
   clear: () => Promise<void>;
 };
 
-export const useTokenStore = create<TokenState>()((set) => ({
+export const useAuthBearerTokenStore = create<AuthBearerTokenState>()((set) => ({
   token: null,
   hydrated: false,
 
@@ -25,13 +25,13 @@ export const useTokenStore = create<TokenState>()((set) => ({
 
   clear: async () => {
     await commands.deleteSessionToken();
-    set({ token: null });
+    set({ token: null, hydrated: false });
   },
 }));
 
-export const tokenStore = {
-  get: () => useTokenStore.getState().token,
-  set: (token: string) => useTokenStore.getState().set(token),
-  clear: () => useTokenStore.getState().clear(),
-  hydrate: () => useTokenStore.getState().hydrate(),
+export const authBearerTokenStore = {
+  get: () => useAuthBearerTokenStore.getState().token,
+  set: (token: string) => useAuthBearerTokenStore.getState().set(token),
+  clear: () => useAuthBearerTokenStore.getState().clear(),
+  hydrate: () => useAuthBearerTokenStore.getState().hydrate(),
 };
