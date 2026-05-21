@@ -27,6 +27,7 @@ function isEditableTarget(target: EventTarget | null): boolean {
 }
 
 import { useTabs } from "@/features/tab/hooks/use-tabs";
+import { useContextMenu } from "@/features/context-menu/hooks/use-context-menu";
 
 function App() {
   useSystemTheme();
@@ -59,14 +60,7 @@ function App() {
     return () => window.removeEventListener("keydown", handler);
   }, []);
 
-  useEffect(() => {
-    const handler = (e: MouseEvent) => {
-      if (e.defaultPrevented) return;
-      e.preventDefault();
-    };
-    window.addEventListener("contextmenu", handler);
-    return () => window.removeEventListener("contextmenu", handler);
-  }, []);
+  useContextMenu();
 
   const clipboard = useClipboard();
   const { pasteClipboardItem, pasteText, pasteKlipy } = usePasteActions();
