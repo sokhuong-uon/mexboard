@@ -1,3 +1,11 @@
+## [1.23.1](https://github.com/sokhuong-uon/mexboard/compare/v1.23.0...v1.23.1) (2026-05-21)
+
+
+### Bug Fixes
+
+* remove GIF from default tab list for further debugging on memory leak issue ([c829cf4](https://github.com/sokhuong-uon/mexboard/commit/c829cf4106ce65f06c84f837f646b0bcc86db3c2))
+* remove link preview to prevent unintentional fetch ([0f5d1ea](https://github.com/sokhuong-uon/mexboard/commit/0f5d1ea81de7496d59bf68ece840d020c2602469))
+
 # [1.23.0](https://github.com/sokhuong-uon/mexboard/compare/v1.22.1...v1.23.0) (2026-05-11)
 
 
