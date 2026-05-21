@@ -3387,7 +3387,7 @@ dependencies = [
 
 [[package]]
 name = "mexboard"
-version = "1.23.0"
+version = "1.23.1"
 dependencies = [
  "aes-gcm",
  "apple-native-keyring-store",

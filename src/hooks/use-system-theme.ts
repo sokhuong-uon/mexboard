@@ -5,13 +5,15 @@ export function useSystemTheme() {
   const { setTheme } = useTheme();
 
   useEffect(() => {
-    const mq = window.matchMedia("(prefers-color-scheme: dark)");
-    setTheme(mq.matches ? "dark" : "light");
+    const colorSchemeMediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+    setTheme(colorSchemeMediaQuery.matches ? "dark" : "light");
 
-    const onChange = (e: MediaQueryListEvent) => {
-      setTheme(e.matches ? "dark" : "light");
+    const onPreferColorSchemeChange = (mediaQueryChangeEvent: MediaQueryListEvent) => {
+      setTheme(mediaQueryChangeEvent.matches ? "dark" : "light");
     };
-    mq.addEventListener("change", onChange);
-    return () => mq.removeEventListener("change", onChange);
+
+    colorSchemeMediaQuery.addEventListener("change", onPreferColorSchemeChange);
+
+    return () => colorSchemeMediaQuery.removeEventListener("change", onPreferColorSchemeChange);
   }, [setTheme]);
 }
