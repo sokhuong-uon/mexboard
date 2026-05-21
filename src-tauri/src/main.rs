@@ -4,14 +4,11 @@
 mod caret;
 mod clipboard;
 mod clipboard_monitor;
-mod cloud;
 mod commands;
-mod crypto;
 mod database;
 mod detection;
 mod schema;
 mod shortcuts;
-mod sync;
 mod tray;
 pub mod websocket;
 mod window;
@@ -19,7 +16,6 @@ mod window;
 use clipboard::ClipboardManager;
 use clipboard_monitor::MonitorState;
 use commands::{create_command_builder, handle_command, parse_command_from_args};
-use sync::SyncState;
 use tauri::Manager;
 use tauri_plugin_deep_link::DeepLinkExt;
 use tauri_plugin_notification::NotificationExt;
@@ -60,7 +56,6 @@ fn main() {
         .plugin(tauri_plugin_opener::init())
         .manage(ClipboardManager::new())
         .manage(MonitorState::new())
-        .manage(SyncState::new())
         .manage(shortcuts::ToggleShortcut::default())
         .manage(WebSocketState::new())
         .setup(move |app| {

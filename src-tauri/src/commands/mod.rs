@@ -3,7 +3,6 @@ mod keyring;
 mod media;
 mod settings;
 mod shortcuts;
-mod sync;
 mod system;
 mod window;
 
@@ -12,7 +11,6 @@ pub use keyring::*;
 pub use media::*;
 pub use settings::*;
 pub use shortcuts::*;
-pub use sync::*;
 pub use system::*;
 pub use window::*;
 
@@ -38,20 +36,9 @@ pub fn create_command_builder() -> Builder<tauri::Wry> {
         set_monitoring,
         is_wayland_session,
         is_cosmic_data_control_enabled,
-        fetch_link_preview,
         download_media_to_temp,
         get_setting,
         set_setting,
-        get_hostname,
-        get_network_interfaces,
-        sync_start_server,
-        sync_connect,
-        sync_approve_connection,
-        sync_reject_connection,
-        sync_cloud_join,
-        sync_stop,
-        mdns_start_discovery,
-        mdns_stop_discovery,
         set_toggle_shortcut,
         get_session_token,
         save_session_token,
@@ -64,7 +51,6 @@ pub fn create_command_builder() -> Builder<tauri::Wry> {
         insert_clipboard_item,
         get_all_clipboard_items,
         bump_clipboard_item,
-        update_clipboard_item_note,
         dedup_clipboard_item,
         clear_clipboard,
         delete_clipboard_item,

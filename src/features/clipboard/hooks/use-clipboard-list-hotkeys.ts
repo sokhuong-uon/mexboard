@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useHotkey, useHotkeys } from "@tanstack/react-hotkeys";
 
 import { useHotkeysConfig } from "@/features/hotkey/hooks/use-hotkeys-config";
-import { useClipboardNoteStore } from "@/features/clipboard/stores/clipboard-note-store";
 import type { ClipboardItem as ClipboardItemType } from "@/types/clipboard";
 
 export const QUICK_PASTE_LIMIT = 9;
@@ -29,7 +28,6 @@ export function useClipboardListHotkeys({
   onToggleFavoriteFilter,
 }: UseClipboardListHotkeysParams) {
   const { hotkeys } = useHotkeysConfig();
-  const isEditingNote = useClipboardNoteStore((s) => s.isEditingNote);
 
   const [activeId, setActiveId] = useState<number | null>(null);
   const [colorMenuItemId, setColorMenuItemId] = useState<number | null>(null);
@@ -84,7 +82,7 @@ export function useClipboardListHotkeys({
   };
 
   const colorMenuIsOpen = colorMenuItemId != null;
-  const hotkeysDisabled = !isActive || colorMenuIsOpen || isEditingNote;
+  const hotkeysDisabled = !isActive || colorMenuIsOpen;
 
   useHotkey(hotkeys.moveDown, moveDown, { enabled: !hotkeysDisabled });
   useHotkey(hotkeys.moveUp, moveUp, { enabled: !hotkeysDisabled });

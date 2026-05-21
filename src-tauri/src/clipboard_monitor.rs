@@ -1,5 +1,4 @@
 use crate::clipboard::ClipboardManager;
-use crate::sync::{self, SyncMessage, SyncState};
 use serde::Serialize;
 use std::sync::atomic::{AtomicBool, Ordering};
 use tauri::{AppHandle, Emitter, Manager};
@@ -37,11 +36,9 @@ impl MonitorState {
 pub fn start_monitor(app: &AppHandle) {
     let handle = app.clone();
 
-    // Task 1: poll the local clipboard and broadcast changes
     tauri::async_runtime::spawn(async move {
         let manager = handle.state::<ClipboardManager>();
         let monitor_state = handle.state::<MonitorState>();
-        let sync_state = handle.state::<SyncState>();
         let mut ticker = interval(Duration::from_millis(500));
         let mut prev_text: Option<String> = None;
         let mut prev_image_hash: Option<u64> = None;
@@ -71,23 +68,6 @@ pub fn start_monitor(app: &AppHandle) {
                                 height,
                             },
                         );
-                        // Broadcast to sync peers if this wasn't from remote
-                        if !is_from_remote(
-                            &sync_state,
-                            &SyncMessage::Image {
-                                base64_data: base64_data.clone(),
-                                width,
-                                height,
-                            },
-                        )
-                        .await
-                        {
-                            sync_state.broadcast(SyncMessage::Image {
-                                base64_data,
-                                width,
-                                height,
-                            });
-                        }
                     }
                     emitted = true;
                 }
@@ -109,15 +89,6 @@ pub fn start_monitor(app: &AppHandle) {
                                 "clipboard-changed",
                                 ClipboardChangeEvent::Text { text: text.clone() },
                             );
-                            // Broadcast to sync peers if this wasn't from remote
-                            if !is_from_remote(
-                                &sync_state,
-                                &SyncMessage::Text { text: text.clone() },
-                            )
-                            .await
-                            {
-                                sync_state.broadcast(SyncMessage::Text { text });
-                            }
                         }
                     }
                     _ => {}
@@ -125,54 +96,6 @@ pub fn start_monitor(app: &AppHandle) {
             }
         }
     });
-
-    // Task 2: consume incoming remote clipboard changes
-    let handle = app.clone();
-    tauri::async_runtime::spawn(async move {
-        let sync_state = handle.state::<SyncState>();
-        let manager = handle.state::<ClipboardManager>();
-        let mut rx = sync_state.incoming_rx.lock().await;
-
-        while let Some(msg) = rx.recv().await {
-            match &msg {
-                SyncMessage::Text { text } => {
-                    let _ = manager.write(text.clone()).await;
-                    let _ = handle.emit(
-                        "clipboard-changed",
-                        ClipboardChangeEvent::Text { text: text.clone() },
-                    );
-                }
-                SyncMessage::Image {
-                    base64_data,
-                    width,
-                    height,
-                } => {
-                    let _ = manager.write_image(base64_data.clone()).await;
-                    let _ = handle.emit(
-                        "clipboard-changed",
-                        ClipboardChangeEvent::Image {
-                            base64_data: base64_data.clone(),
-                            width: *width,
-                            height: *height,
-                        },
-                    );
-                }
-            }
-        }
-    });
-}
-
-/// Check if a clipboard change matches the last remote content (echo suppression).
-async fn is_from_remote(sync_state: &SyncState, msg: &SyncMessage) -> bool {
-    let hash = sync::content_hash(msg);
-    let mut remote_hash = sync_state.last_remote_hash.write().await;
-    if *remote_hash == Some(hash) {
-        // Consume the marker so subsequent identical local copies still sync
-        *remote_hash = None;
-        true
-    } else {
-        false
-    }
 }
 
 fn fast_hash(s: &str) -> u64 {

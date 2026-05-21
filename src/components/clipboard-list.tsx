@@ -10,7 +10,6 @@ import {
   ClipboardContent,
 } from "@/types/clipboard";
 import { useModifierHeld } from "@/features/hotkey/hooks/use-modifier-held";
-import { useClipboardNoteStore } from "@/features/clipboard/stores/clipboard-note-store";
 import {
   useClipboardListHotkeys,
   QUICK_PASTE_LIMIT,
@@ -50,9 +49,8 @@ export const ClipboardList = ({
   onLoadMore,
   isActive = true,
 }: ClipboardListProps) => {
-  const isEditingNote = useClipboardNoteStore((s) => s.isEditingNote);
   const modifierHeld = useModifierHeld();
-  const showQuickPaste = isActive && modifierHeld && !isEditingNote;
+  const showQuickPaste = isActive && modifierHeld;
 
   const { activeIndex, colorMenuItemId, setColorMenuItemId } =
     useClipboardListHotkeys({

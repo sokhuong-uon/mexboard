@@ -16,9 +16,6 @@ pub use delete_clipboard_item::*;
 pub mod update_clipboard_sort_order;
 pub use update_clipboard_sort_order::*;
 
-pub mod update_clipboard_item_note;
-pub use update_clipboard_item_note::*;
-
 pub mod bump_clipboard_item;
 pub use bump_clipboard_item::*;
 

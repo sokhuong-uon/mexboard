@@ -1,6 +1,5 @@
 import { Input } from "@/components/ui/input";
 import { useClipboardSearchQueryStore } from "@/features/clipboard/stores/clipboard-search-query-store";
-import { useClipboardNoteStore } from "@/features/clipboard/stores/clipboard-note-store";
 import { useHotkey } from "@tanstack/react-hotkeys";
 import { Search } from "lucide-react";
 import { ComponentProps, useRef } from "react";
@@ -14,8 +13,6 @@ export function ClipboardSearchBox({ className }: ComponentProps<"div">) {
   const setSearchQuery = useClipboardSearchQueryStore(
     (state) => state.setSearchQuery,
   );
-  const { isEditingNote } = useClipboardNoteStore();
-
   const { hotkeys } = useHotkeysConfig();
 
   const debouncedSetSearchQuery = useDebouncedCallback(setSearchQuery, {
@@ -27,7 +24,6 @@ export function ClipboardSearchBox({ className }: ComponentProps<"div">) {
   };
 
   useHotkey(hotkeys.search, focusSearch, {
-    enabled: !isEditingNote,
     ignoreInputs: true,
   });
 

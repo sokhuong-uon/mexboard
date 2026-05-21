@@ -20,7 +20,6 @@ export const commands = {
 	setMonitoring: (enabled: boolean) => __TAURI_INVOKE<void>("set_monitoring", { enabled }),
 	isWaylandSession: () => __TAURI_INVOKE<boolean>("is_wayland_session"),
 	isCosmicDataControlEnabled: () => __TAURI_INVOKE<boolean>("is_cosmic_data_control_enabled"),
-	fetchLinkPreview: (url: string) => typedError<LinkPreviewData, string>(__TAURI_INVOKE("fetch_link_preview", { url })),
 	/**
 	 *  Downloads a media URL to a temporary file and returns the file path
 	 *  along with a small PNG icon for the drag preview.
@@ -28,16 +27,6 @@ export const commands = {
 	downloadMediaToTemp: (url: string) => typedError<[string, string], string>(__TAURI_INVOKE("download_media_to_temp", { url })),
 	getSetting: (key: string) => typedError<string | null, string>(__TAURI_INVOKE("get_setting", { key })),
 	setSetting: (key: string, value: string) => typedError<null, string>(__TAURI_INVOKE("set_setting", { key, value })),
-	getHostname: () => __TAURI_INVOKE<string>("get_hostname"),
-	getNetworkInterfaces: () => __TAURI_INVOKE<NetworkInterfaceInfo[]>("get_network_interfaces"),
-	syncStartServer: (port: number) => typedError<SyncStartResult, string>(__TAURI_INVOKE("sync_start_server", { port })),
-	syncConnect: (address: string) => typedError<null, string>(__TAURI_INVOKE("sync_connect", { address })),
-	syncApproveConnection: (id: string) => typedError<null, string>(__TAURI_INVOKE("sync_approve_connection", { id })),
-	syncRejectConnection: (id: string) => typedError<null, string>(__TAURI_INVOKE("sync_reject_connection", { id })),
-	syncCloudJoin: (relayUrl: string, authToken: string) => typedError<string, string>(__TAURI_INVOKE("sync_cloud_join", { relayUrl, authToken })),
-	syncStop: () => typedError<null, string>(__TAURI_INVOKE("sync_stop")),
-	mdnsStartDiscovery: () => typedError<null, string>(__TAURI_INVOKE("mdns_start_discovery")),
-	mdnsStopDiscovery: () => typedError<null, string>(__TAURI_INVOKE("mdns_stop_discovery")),
 	setToggleShortcut: (accelerator: string) => typedError<null, string>(__TAURI_INVOKE("set_toggle_shortcut", { accelerator })),
 	getSessionToken: () => __TAURI_INVOKE<string | null>("get_session_token"),
 	saveSessionToken: (token: string) => typedError<null, string>(__TAURI_INVOKE("save_session_token", { token })),
@@ -49,7 +38,6 @@ export const commands = {
 	insertClipboardItem: (params: InsertClipboardItemParams) => typedError<ClipboardItemRow, string>(__TAURI_INVOKE("insert_clipboard_item", { params })),
 	getAllClipboardItems: (limit: number, offset: number, favoritesFirst: boolean) => typedError<ClipboardItemRow[], string>(__TAURI_INVOKE("get_all_clipboard_items", { limit, offset, favoritesFirst })),
 	bumpClipboardItem: (id: number, sortOrder: string) => typedError<ClipboardItemRow, string>(__TAURI_INVOKE("bump_clipboard_item", { id, sortOrder })),
-	updateClipboardItemNote: (id: number, note: string | null) => typedError<ClipboardItemRow, string>(__TAURI_INVOKE("update_clipboard_item_note", { id, note })),
 	dedupClipboardItem: (id: number) => typedError<number, string>(__TAURI_INVOKE("dedup_clipboard_item", { id })),
 	clearClipboard: () => typedError<null, string>(__TAURI_INVOKE("clear_clipboard")),
 	deleteClipboardItem: (id: number) => typedError<null, string>(__TAURI_INVOKE("delete_clipboard_item", { id })),
@@ -93,23 +81,6 @@ export type InsertClipboardItemParams = {
 	kv_key: string | null,
 	created_at: string,
 	updated_at: string,
-};
-
-export type LinkPreviewData = {
-	title: string | null,
-	description: string | null,
-	image: string | null,
-	favicon: string | null,
-	site_name: string | null,
-};
-
-export type NetworkInterfaceInfo = {
-	name: string,
-	ip: string,
-};
-
-export type SyncStartResult = {
-	address: string,
 };
 
 export type UpdateSortOrderParams = {

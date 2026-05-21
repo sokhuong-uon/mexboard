@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { ChevronDown } from "lucide-react";
 import { ClipboardItem } from "@/types/clipboard";
-import { isUrl } from "@/components/link-preview";
+import { isHttpUrl } from "@/utils/is-http-url";
 import { ClipboardItemColor } from "@/components/clipboard-item-color";
 import { ClipboardItemFile } from "@/components/clipboard-item-file";
 import {
@@ -101,7 +101,7 @@ export const ClipboardItemContent = ({ item }: { item: ClipboardItem }) => {
     return <ClipboardItemColor item={item} />;
   }
 
-  if (isUrl(item.text_content || "")) {
+  if (isHttpUrl(item.text_content || "")) {
     const mediaType = getMediaType(item.text_content!);
 
     if (mediaType === "image") {

@@ -28,9 +28,7 @@
   "plugins": {
     "deep-link": {
       "desktop": {
-        "schemes": [
-          "mexboard"
-        ]
+        "schemes": ["mexboard"]
       }
     }
   },

@@ -98,28 +98,4 @@ impl Database {
 
         Ok(ClipboardItemRow::from(row))
     }
-
-    pub fn update_note(&self, id: i16, note: Option<&str>) -> DbResult<ClipboardItemRow> {
-        let inner = self.lock()?;
-        let ci = &inner.schema.clipboard_items;
-
-        inner
-            .db
-            .conn()
-            .execute(
-                "UPDATE clipboard_items SET note = ?1 WHERE id = ?2",
-                rusqlite::params![note, id],
-            )
-            .map_err(error_to_string)?;
-
-        let row: SelectClipboardItems = inner
-            .db
-            .select(())
-            .from(*ci)
-            .r#where(eq(ci.id, id))
-            .get()
-            .map_err(error_to_string)?;
-
-        Ok(ClipboardItemRow::from(row))
-    }
 }
