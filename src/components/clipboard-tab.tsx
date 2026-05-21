@@ -1,10 +1,10 @@
 import { useCallback } from "react";
 
+import { useClipboard } from "@/hooks/use-clipboard";
 import { ErrorBanner } from "@/components/clipboard-error-banner";
 import { ClipboardList } from "@/components/clipboard-list";
 import { ClipboardItemSkeletonList } from "@/components/clipboard-item-skeleton";
 import { ClipboardHeader } from "@/components/clipboard-window-header";
-import type { useClipboard } from "@/hooks/use-clipboard";
 import { useSettings } from "@/hooks/use-settings";
 import { useHotkeysConfig } from "@/features/hotkey/hooks/use-hotkeys-config";
 import { useClipboardHistory } from "@/features/clipboard/hooks/use-clipboard-history";
@@ -15,18 +15,13 @@ import { useClipboardSearchQueryStore } from "@/features/clipboard/stores/clipbo
 import { useClipboardMonitoringStore } from "@/features/clipboard/stores/clipboard-monitoring-store";
 
 type ClipboardTabProps = {
-  clipboard: ReturnType<typeof useClipboard>;
   onPaste: (item: ClipboardItem) => Promise<void>;
   isActive: boolean;
 };
 
-export function ClipboardTab({
-  clipboard,
-  onPaste,
-  isActive,
-}: ClipboardTabProps) {
+export function ClipboardTab({ onPaste, isActive }: ClipboardTabProps) {
   const { readContent, write, writeImage, reinitialize, error, dismissError } =
-    clipboard;
+    useClipboard();
 
   const isMonitoring = useClipboardMonitoringStore(
     (state) => state.isMonitoring,

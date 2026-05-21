@@ -24,7 +24,7 @@ function App() {
 
   useContextMenu();
 
-  const clipboard = useClipboard();
+  const { write } = useClipboard();
   const { pasteClipboardItem, pasteText } = usePasteActions();
 
   return (
@@ -40,7 +40,6 @@ function App() {
           className="flex flex-col overflow-hidden min-h-0 data-hidden:hidden"
         >
           <ClipboardTab
-            clipboard={clipboard}
             onPaste={pasteClipboardItem}
             isActive={activeTab === "clipboard"}
           />
@@ -52,7 +51,7 @@ function App() {
           className="flex flex-col overflow-hidden min-h-0 data-hidden:hidden"
         >
           <SymbolsView
-            onSelect={clipboard.write}
+            onSelect={write}
             onPaste={pasteText}
             isActive={activeTab === "symbols"}
           />
