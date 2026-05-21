@@ -1,3 +1,10 @@
+## [1.23.2](https://github.com/sokhuong-uon/mexboard/compare/v1.23.1...v1.23.2) (2026-05-21)
+
+
+### Bug Fixes
+
+* remove unused import in use-clipboard-history.ts ([4d96f21](https://github.com/sokhuong-uon/mexboard/commit/4d96f2152a733d994260846a6891e9d19921b3ce))
+
 ## [1.23.1](https://github.com/sokhuong-uon/mexboard/compare/v1.23.0...v1.23.1) (2026-05-21)
 
 
