@@ -1,10 +1,6 @@
 import "@/main.css";
-import { useEffect, useState } from "react";
-import { getCurrentWindow } from "@tauri-apps/api/window";
-import { useHotkey } from "@tanstack/react-hotkeys";
-
+import { useEffect } from "react";
 import { ClipboardTab } from "@/components/clipboard-tab";
-import { GifView } from "@/features/klipy/components/gif-view";
 import { SymbolsView } from "@/components/symbols-view";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
@@ -12,54 +8,30 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { useClipboard } from "@/hooks/use-clipboard";
 import { useSystemTheme } from "@/hooks/use-system-theme";
 import { usePasteActions } from "@/hooks/use-paste-actions";
-import { useHotkeysConfig } from "@/features/hotkey/hooks/use-hotkeys-config";
 
 import { initializeBetterAuth } from "@/features/auth/lib/initialize-better-auth";
-
-type TabValue = "clipboard" | "gif" | "symbols";
-
-const TAB_ORDER: readonly TabValue[] = ["clipboard", "gif", "symbols"];
-
-function isEditableTarget(target: EventTarget | null): boolean {
-  if (!(target instanceof HTMLElement)) return false;
-  const tag = target.tagName;
-  return tag === "INPUT" || tag === "TEXTAREA" || target.isContentEditable;
-}
 
 import { useTabs } from "@/features/tab/hooks/use-tabs";
 import { useContextMenu } from "@/features/context-menu/hooks/use-context-menu";
 
 function App() {
   useSystemTheme();
-  const [activeTab, setActiveTab] = useState<TabValue>("clipboard");
-  const { hotkeys } = useHotkeysConfig();
-  const tabs = useTabs();
+  const { tabs, activeTab, setActiveTab } = useTabs();
 
   useEffect(() => {
     return initializeBetterAuth();
   }, []);
 
-  useHotkey(
-    hotkeys.cycleTabs,
-    () => {
-      setActiveTab((prev) => {
-        const idx = TAB_ORDER.indexOf(prev);
-        return TAB_ORDER[(idx + 1) % TAB_ORDER.length];
-      });
-    },
-    { ignoreInputs: true },
-  );
-
   useContextMenu();
 
   const clipboard = useClipboard();
-  const { pasteClipboardItem, pasteText, pasteKlipy } = usePasteActions();
+  const { pasteClipboardItem, pasteText } = usePasteActions();
 
   return (
     <TooltipProvider>
       <Tabs
         value={activeTab}
-        onValueChange={(v) => setActiveTab(v as TabValue)}
+        onValueChange={(tab) => setActiveTab(tab)}
         className="h-full overflow-hidden bg-background text-foreground pt-3"
       >
         <TabsContent
@@ -72,14 +44,6 @@ function App() {
             onPaste={pasteClipboardItem}
             isActive={activeTab === "clipboard"}
           />
-        </TabsContent>
-
-        <TabsContent
-          value="gif"
-          keepMounted
-          className="flex flex-col overflow-hidden min-h-0 data-hidden:hidden"
-        >
-          <GifView onPaste={pasteKlipy} isActive={activeTab === "gif"} />
         </TabsContent>
 
         <TabsContent

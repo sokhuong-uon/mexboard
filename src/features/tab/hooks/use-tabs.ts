@@ -1,21 +1,40 @@
-import { Copy, ImagePlay, SquarePercent } from "lucide-react";
+import { Copy, SquarePercent } from "lucide-react";
+import { useHotkeysConfig } from "@/features/hotkey/hooks/use-hotkeys-config";
+import { useHotkey } from "@tanstack/react-hotkeys";
+import { useState } from "react";
+
+const TAB_ORDER = ["clipboard", "symbols"] as const;
 
 export function useTabs() {
-  return [
-    {
-      label: 'Clipboard',
-      value: 'clipboard',
-      icon: Copy
+  const [activeTab, setActiveTab] = useState<typeof TAB_ORDER[number]>("clipboard");
+
+  const { hotkeys } = useHotkeysConfig();
+
+  useHotkey(
+    hotkeys.cycleTabs,
+    () => {
+      setActiveTab((previousTab) => {
+        const previousTabIndex = TAB_ORDER.indexOf(previousTab);
+        return TAB_ORDER[(previousTabIndex + 1) % TAB_ORDER.length];
+      });
     },
-    {
-      label: 'GIF',
-      value: 'gif',
-      icon: ImagePlay
-    },
-    {
-      label: 'Symbols',
-      value: 'symbols',
-      icon: SquarePercent
-    }
-  ]
+    { ignoreInputs: true },
+  );
+
+  return {
+    activeTab,
+    setActiveTab,
+    tabs: [
+        {
+          label: 'Clipboard',
+          value: 'clipboard',
+          icon: Copy
+        },
+        {
+          label: 'Symbols',
+          value: 'symbols',
+          icon: SquarePercent
+        }
+      ]
+  }
 }
