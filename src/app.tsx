@@ -50,16 +50,6 @@ function App() {
     { ignoreInputs: true },
   );
 
-  useEffect(() => {
-    const handler = (e: KeyboardEvent) => {
-      if (e.key !== "Escape" || e.defaultPrevented) return;
-      if (isEditableTarget(e.target)) return;
-      void getCurrentWindow().hide();
-    };
-    window.addEventListener("keydown", handler);
-    return () => window.removeEventListener("keydown", handler);
-  }, []);
-
   useContextMenu();
 
   const clipboard = useClipboard();
