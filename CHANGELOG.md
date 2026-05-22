@@ -1,3 +1,10 @@
+## [1.23.3](https://github.com/sokhuong-uon/mexboard/compare/v1.23.2...v1.23.3) (2026-05-22)
+
+
+### Bug Fixes
+
+* remove a feature for pasting via ctrl+number key ([b010f58](https://github.com/sokhuong-uon/mexboard/commit/b010f5895c2b9b2968071b0bbc53c246ecc44a64))
+
 ## [1.23.2](https://github.com/sokhuong-uon/mexboard/compare/v1.23.1...v1.23.2) (2026-05-21)
 
 
