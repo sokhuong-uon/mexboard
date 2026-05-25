@@ -1,3 +1,10 @@
+## [1.23.4](https://github.com/sokhuong-uon/mexboard/compare/v1.23.3...v1.23.4) (2026-05-25)
+
+
+### Bug Fixes
+
+* remove messy erroring feature ([d2eb063](https://github.com/sokhuong-uon/mexboard/commit/d2eb06300dfa4fe49f1d6c0579c18bd30eeed0cf))
+
 ## [1.23.3](https://github.com/sokhuong-uon/mexboard/compare/v1.23.2...v1.23.3) (2026-05-22)
 
 

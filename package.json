@@ -1,7 +1,7 @@
 {
   "name": "mexboard",
   "private": false,
-  "version": "1.23.3",
+  "version": "1.23.4",
   "type": "module",
   "packageManager": "pnpm@10.27.0",
   "scripts": {
