@@ -41,7 +41,7 @@ function App() {
         >
           <ClipboardTab
             onPaste={pasteClipboardItem}
-            isActive={activeTab === "clipboard"}
+            isActiveTab={activeTab === "clipboard"}
           />
         </TabsContent>
 

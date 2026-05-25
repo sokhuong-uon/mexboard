@@ -10,10 +10,6 @@ export const SearchResultItem = memo(function SearchResultItem({
   isCopied,
   onCopy,
   onDelete,
-  onToggleFavorite,
-  onSplitEnv,
-  colorMenuOpen,
-  onColorMenuOpenChange,
 }: {
   item: ClipboardItemType;
   isActive: boolean;
@@ -53,10 +49,6 @@ export const SearchResultItem = memo(function SearchResultItem({
         isCopied={isCopied}
         onCopy={onCopy}
         onDelete={onDelete}
-        onToggleFavorite={onToggleFavorite}
-        onSplitEnv={onSplitEnv}
-        colorMenuOpen={colorMenuOpen}
-        onColorMenuOpenChange={onColorMenuOpenChange}
       />
     </motion.li>
   );

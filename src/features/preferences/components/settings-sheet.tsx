@@ -1,5 +1,4 @@
 import { Settings2 } from "lucide-react";
-import type { Hotkey } from "@tanstack/react-hotkeys";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -9,28 +8,16 @@ import {
   SheetDescription,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import type {
-  HotkeyAction,
-  HotkeyConfig,
-} from "@/features/hotkey/hotkey-actions";
 import { SettingsSheetBody } from "@/features/preferences/components/settings-sheet-body";
 
 type SettingsSheetProps = {
   historyLimit: number;
   onHistoryLimitChange: (limit: number) => void;
-  hotkeys: HotkeyConfig;
-  onSetHotkey: (action: HotkeyAction, hotkey: Hotkey) => void;
-  onResetHotkey: (action: HotkeyAction) => void;
-  onResetAllHotkeys: () => void;
 };
 
 export function SettingsSheet({
   historyLimit,
   onHistoryLimitChange,
-  hotkeys,
-  onSetHotkey,
-  onResetHotkey,
-  onResetAllHotkeys,
 }: SettingsSheetProps) {
   return (
     <Sheet>
@@ -60,10 +47,6 @@ export function SettingsSheet({
         <SettingsSheetBody
           historyLimit={historyLimit}
           onHistoryLimitChange={onHistoryLimitChange}
-          hotkeys={hotkeys}
-          onSetHotkey={onSetHotkey}
-          onResetHotkey={onResetHotkey}
-          onResetAllHotkeys={onResetAllHotkeys}
         />
       </SheetContent>
     </Sheet>

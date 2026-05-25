@@ -1,6 +1,4 @@
 import { useCallback, useMemo } from "react";
-import { DragDropProvider } from "@dnd-kit/react";
-import { isSortable } from "@dnd-kit/react/sortable";
 
 import { EmptyState } from "@/components/clipboard-empty-state";
 import { Button } from "@/components/ui/button";
@@ -12,7 +10,6 @@ import {
 import { useClipboardListHotkeys } from "@/features/clipboard/hooks/use-clipboard-list-hotkeys";
 import { isItemCopied } from "@/features/clipboard/utils/is-item-copied";
 import { SortableItem } from "./sortable-item";
-import { SearchResultItem } from "./search-result-item";
 
 type ClipboardListProps = {
   items: ClipboardItemType[];
@@ -21,7 +18,6 @@ type ClipboardListProps = {
   onPaste?: (item: ClipboardItemType) => void;
   onDelete: (id: number) => void;
   onToggleFavorite: (id: number) => void;
-  onReorder: (activeId: number, overId: number) => void;
   onSplitEnv?: (id: number) => void;
   onToggleFavoriteFilter?: () => void;
   isSearching?: boolean;
@@ -37,25 +33,20 @@ export const ClipboardList = ({
   onPaste,
   onDelete,
   onToggleFavorite,
-  onReorder,
-  onSplitEnv,
   onToggleFavoriteFilter,
   isSearching = false,
   hasMore = false,
   onLoadMore,
   isActive = true,
 }: ClipboardListProps) => {
-  const { activeIndex, colorMenuItemId, setColorMenuItemId } =
-    useClipboardListHotkeys({
-      items,
-      isActive,
-      isSearching,
-      onCopy,
-      onPaste,
-      onDelete,
-      onToggleFavorite,
-      onToggleFavoriteFilter,
-    });
+  const { colorMenuItemId, setColorMenuItemId } = useClipboardListHotkeys({
+    items,
+    isActive,
+    isSearching,
+    onPaste,
+    onToggleFavorite,
+    onToggleFavoriteFilter,
+  });
 
   const colorMenuHandlers = useMemo(
     () => new Map<number, (open: boolean) => void>(),
@@ -73,53 +64,8 @@ export const ClipboardList = ({
     [colorMenuHandlers, setColorMenuItemId],
   );
 
-  const handleDragEnd = useCallback(
-    (
-      event: Parameters<
-        NonNullable<React.ComponentProps<typeof DragDropProvider>["onDragEnd"]>
-      >[0],
-    ) => {
-      const { source } = event.operation;
-      if (!source || !isSortable(source)) return;
-
-      const { index, initialIndex } = source.sortable;
-      if (index === initialIndex) return;
-
-      const sourceId = items[initialIndex]?.id;
-      const overId = items[index]?.id;
-
-      if (sourceId != null && overId != null && sourceId !== overId) {
-        onReorder(sourceId, overId);
-      }
-    },
-    [items, onReorder],
-  );
-
   if (items.length === 0) {
     return <EmptyState isSearching={isSearching} />;
-  }
-
-  if (isSearching) {
-    return (
-      <ClipboardItemsGrid
-        items={items}
-        ariaLabel="Search results"
-        renderItem={(item, index) => (
-          <SearchResultItem
-            key={item.id}
-            item={item}
-            isActive={index === activeIndex}
-            isCopied={isItemCopied(item, currentContent)}
-            onCopy={onCopy}
-            onDelete={onDelete}
-            onToggleFavorite={onToggleFavorite}
-            onSplitEnv={onSplitEnv}
-            colorMenuOpen={colorMenuItemId === item.id}
-            onColorMenuOpenChange={getColorMenuHandler(item.id)}
-          />
-        )}
-      />
-    );
   }
 
   const loadMoreButton = hasMore && onLoadMore && (
@@ -135,26 +81,21 @@ export const ClipboardList = ({
   );
 
   return (
-    <DragDropProvider onDragEnd={handleDragEnd}>
-      <ClipboardItemsGrid
-        items={items}
-        footer={loadMoreButton}
-        renderItem={(item, index) => (
-          <SortableItem
-            key={item.id}
-            item={item}
-            index={index}
-            isActive={index === activeIndex}
-            isCopied={isItemCopied(item, currentContent)}
-            onCopy={onCopy}
-            onDelete={onDelete}
-            onToggleFavorite={onToggleFavorite}
-            onSplitEnv={onSplitEnv}
-            colorMenuOpen={colorMenuItemId === item.id}
-            onColorMenuOpenChange={getColorMenuHandler(item.id)}
-          />
-        )}
-      />
-    </DragDropProvider>
+    <ClipboardItemsGrid
+      items={items}
+      footer={loadMoreButton}
+      renderItem={(item) => (
+        <SortableItem
+          key={item.id}
+          item={item}
+          isCopied={isItemCopied(item, currentContent)}
+          onCopy={onCopy}
+          onDelete={onDelete}
+          onToggleFavorite={onToggleFavorite}
+          colorMenuOpen={colorMenuItemId === item.id}
+          onColorMenuOpenChange={getColorMenuHandler(item.id)}
+        />
+      )}
+    />
   );
 };

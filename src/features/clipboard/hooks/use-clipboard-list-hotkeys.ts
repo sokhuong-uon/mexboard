@@ -10,9 +10,7 @@ type UseClipboardListHotkeysParams = {
   items: ClipboardItemType[];
   isActive: boolean;
   isSearching: boolean;
-  onCopy: (item: ClipboardItemType) => void;
   onPaste?: (item: ClipboardItemType) => void;
-  onDelete: (id: number) => void;
   onToggleFavorite: (id: number) => void;
   onToggleFavoriteFilter?: () => void;
 };
@@ -21,9 +19,7 @@ export function useClipboardListHotkeys({
   items,
   isActive,
   isSearching,
-  onCopy,
   onPaste,
-  onDelete,
   onToggleFavorite,
   onToggleFavoriteFilter,
 }: UseClipboardListHotkeysParams) {
@@ -62,23 +58,10 @@ export function useClipboardListHotkeys({
     setActiveIndex(Math.max(activeIndex - 1, 0));
   };
 
-  const copyActive = () => {
-    if (activeIndex >= 0 && items[activeIndex]) onCopy(items[activeIndex]);
-  };
-
   const pasteActive = () => {
     if (activeIndex >= 0 && items[activeIndex] && onPaste) {
       onPaste(items[activeIndex]);
     }
-  };
-
-  const deleteActive = () => {
-    if (activeIndex < 0 || !items[activeIndex]) return;
-    const nextIndex =
-      activeIndex < items.length - 1 ? activeIndex + 1 : activeIndex - 1;
-    const nextId = nextIndex >= 0 ? items[nextIndex].id : null;
-    onDelete(items[activeIndex].id);
-    setActiveId(nextId);
   };
 
   const colorMenuIsOpen = colorMenuItemId != null;
@@ -87,16 +70,7 @@ export function useClipboardListHotkeys({
   useHotkey(hotkeys.moveDown, moveDown, { enabled: !hotkeysDisabled });
   useHotkey(hotkeys.moveUp, moveUp, { enabled: !hotkeysDisabled });
 
-  useHotkey(hotkeys.copy, copyActive, {
-    enabled: activeIndex >= 0 && !hotkeysDisabled,
-    ignoreInputs: false,
-  });
-
   useHotkey(hotkeys.paste, pasteActive, {
-    enabled: activeIndex >= 0 && !hotkeysDisabled,
-  });
-
-  useHotkey(hotkeys.delete, deleteActive, {
     enabled: activeIndex >= 0 && !hotkeysDisabled,
   });
 

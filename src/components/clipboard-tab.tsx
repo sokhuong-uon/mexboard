@@ -6,7 +6,6 @@ import { ClipboardList } from "@/components/clipboard-list";
 import { ClipboardItemSkeletonList } from "@/components/clipboard-item-skeleton";
 import { ClipboardHeader } from "@/components/clipboard-window-header";
 import { useSettings } from "@/hooks/use-settings";
-import { useHotkeysConfig } from "@/features/hotkey/hooks/use-hotkeys-config";
 import { useClipboardHistory } from "@/features/clipboard/hooks/use-clipboard-history";
 import { useClipboardMonitor } from "@/hooks/use-clipboard-monitor";
 import { useClipboardFilters } from "@/hooks/use-clipboard-filters";
@@ -16,10 +15,10 @@ import { useClipboardMonitoringStore } from "@/features/clipboard/stores/clipboa
 
 type ClipboardTabProps = {
   onPaste: (item: ClipboardItem) => Promise<void>;
-  isActive: boolean;
+  isActiveTab: boolean;
 };
 
-export function ClipboardTab({ onPaste, isActive }: ClipboardTabProps) {
+export function ClipboardTab({ onPaste, isActiveTab }: ClipboardTabProps) {
   const {
     readContent,
     writeTextToSystemClipboard,
@@ -39,13 +38,6 @@ export function ClipboardTab({ onPaste, isActive }: ClipboardTabProps) {
 
   const { historyLimit, setHistoryLimit } = useSettings();
   const {
-    hotkeys,
-    setHotkey,
-    resetHotkey,
-    resetAll: resetAllHotkeys,
-  } = useHotkeysConfig();
-
-  const {
     history,
     hasMore,
     loadMore,
@@ -55,7 +47,6 @@ export function ClipboardTab({ onPaste, isActive }: ClipboardTabProps) {
     addContentToHistory,
     deleteItem,
     toggleFavorite,
-    reorderItems,
     splitEnvItem,
   } = useClipboardHistory(historyLimit, false);
 
@@ -98,10 +89,6 @@ export function ClipboardTab({ onPaste, isActive }: ClipboardTabProps) {
         onHistoryLimitChange={setHistoryLimit}
         filters={filters}
         onFiltersChange={setFilters}
-        hotkeys={hotkeys}
-        onSetHotkey={setHotkey}
-        onResetHotkey={resetHotkey}
-        onResetAllHotkeys={resetAllHotkeys}
       />
 
       {error && (
@@ -123,13 +110,12 @@ export function ClipboardTab({ onPaste, isActive }: ClipboardTabProps) {
             onPaste={onPaste}
             onDelete={deleteItem}
             onToggleFavorite={toggleFavorite}
-            onReorder={reorderItems}
             onSplitEnv={splitEnvItem}
             onToggleFavoriteFilter={toggleFavoriteFilter}
             isSearching={isSearching}
             hasMore={hasMore && !isSearching}
             onLoadMore={loadMore}
-            isActive={isActive}
+            isActive={isActiveTab}
           />
         )}
       </div>

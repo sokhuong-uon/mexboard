@@ -1,9 +1,4 @@
-import type { Hotkey } from "@tanstack/react-hotkeys";
 import { ClipboardFilters } from "@/types/clipboard";
-import type {
-  HotkeyAction,
-  HotkeyConfig,
-} from "@/features/hotkey/hotkey-actions";
 import { SettingsSheet } from "@/features/preferences/components/settings-sheet";
 import { ClipboardFilterMenu } from "@/components/clipboard-filter-menu";
 import { ClipboardSearchBox } from "@/features/clipboard/components/clipboard-search-box";
@@ -13,10 +8,6 @@ type ClipboardHeaderProps = {
   onHistoryLimitChange: (limit: number) => void;
   filters: ClipboardFilters;
   onFiltersChange: (filters: ClipboardFilters) => void;
-  hotkeys: HotkeyConfig;
-  onSetHotkey: (action: HotkeyAction, hotkey: Hotkey) => void;
-  onResetHotkey: (action: HotkeyAction) => void;
-  onResetAllHotkeys: () => void;
 };
 
 export const ClipboardHeader = ({
@@ -24,10 +15,6 @@ export const ClipboardHeader = ({
   onHistoryLimitChange,
   filters,
   onFiltersChange,
-  hotkeys,
-  onSetHotkey,
-  onResetHotkey,
-  onResetAllHotkeys,
 }: ClipboardHeaderProps) => {
   return (
     <header className="flex items-center gap-2 px-4 pb-2 pt-1 group/header">
@@ -41,10 +28,6 @@ export const ClipboardHeader = ({
       <SettingsSheet
         historyLimit={historyLimit}
         onHistoryLimitChange={onHistoryLimitChange}
-        hotkeys={hotkeys}
-        onSetHotkey={onSetHotkey}
-        onResetHotkey={onResetHotkey}
-        onResetAllHotkeys={onResetAllHotkeys}
       />
     </header>
   );

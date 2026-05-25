@@ -1,9 +1,4 @@
-import type { Hotkey } from "@tanstack/react-hotkeys";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import type {
-  HotkeyAction,
-  HotkeyConfig,
-} from "@/features/hotkey/hotkey-actions";
 import { GeneralSettings } from "@/features/preferences/components/general-settings";
 import { HotkeysSettings } from "@/features/preferences/components/hotkeys-settings";
 import { Cloud, Keyboard, Settings2 } from "lucide-react";
@@ -12,19 +7,11 @@ import { SyncCloudConnect } from "@/features/sync/components/sync-cloud-connect"
 type SettingsBodyProps = {
   historyLimit: number;
   onHistoryLimitChange: (limit: number) => void;
-  hotkeys: HotkeyConfig;
-  onSetHotkey: (action: HotkeyAction, hotkey: Hotkey) => void;
-  onResetHotkey: (action: HotkeyAction) => void;
-  onResetAllHotkeys: () => void;
 };
 
 export function SettingsSheetBody({
   historyLimit,
   onHistoryLimitChange,
-  hotkeys,
-  onSetHotkey,
-  onResetHotkey,
-  onResetAllHotkeys,
 }: SettingsBodyProps) {
   return (
     <Tabs defaultValue="general" className="px-6 pb-6">
@@ -54,12 +41,7 @@ export function SettingsSheetBody({
       </TabsContent>
 
       <TabsContent value="keymap">
-        <HotkeysSettings
-          hotkeys={hotkeys}
-          onSetHotkey={onSetHotkey}
-          onResetHotkey={onResetHotkey}
-          onResetAll={onResetAllHotkeys}
-        />
+        <HotkeysSettings />
       </TabsContent>
     </Tabs>
   );
