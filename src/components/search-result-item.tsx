@@ -1,55 +1,13 @@
-import { memo, useEffect, useRef } from "react";
-import { motion } from "motion/react";
+import { memo } from "react";
 
-import { ClipboardItem } from "@/features/clipboard/components/clipboard-item";
-import { ClipboardItem as ClipboardItemType } from "@/types/clipboard";
+import { ClipboardItemCard } from "@/features/clipboard/components/clipboard-item-card";
 
 export const SearchResultItem = memo(function SearchResultItem({
-  item,
-  isActive,
   isCopied,
-  onCopy,
   onDelete,
 }: {
-  item: ClipboardItemType;
-  isActive: boolean;
   isCopied: boolean;
-  onCopy: (item: ClipboardItemType) => void;
   onDelete: (id: number) => void;
-  onToggleFavorite: (id: number) => void;
-  onSplitEnv?: (id: number) => void;
-  colorMenuOpen?: boolean;
-  onColorMenuOpenChange?: (open: boolean) => void;
 }) {
-  const ref = useRef<HTMLLIElement>(null);
-
-  useEffect(() => {
-    if (isActive && ref.current) {
-      ref.current.scrollIntoView({ block: "nearest" });
-      ref.current.focus({ preventScroll: true });
-    }
-  }, [isActive]);
-
-  return (
-    <motion.li
-      ref={ref}
-      role="option"
-      aria-selected={isActive}
-      tabIndex={isActive ? 0 : -1}
-      initial={{ opacity: 0, y: -8 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -8, transition: { duration: 0.15 } }}
-      transition={{ type: "spring", stiffness: 500, damping: 35 }}
-      className={`list-none rounded-xl transition-shadow outline-none ${
-        isActive ? "ring-2 ring-ring" : ""
-      }`}
-    >
-      <ClipboardItem
-        item={item}
-        isCopied={isCopied}
-        onCopy={onCopy}
-        onDelete={onDelete}
-      />
-    </motion.li>
-  );
+  return <ClipboardItemCard isCopied={isCopied} onDelete={onDelete} />;
 });

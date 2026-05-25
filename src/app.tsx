@@ -7,7 +7,6 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 
 import { useClipboard } from "@/hooks/use-clipboard";
 import { useSystemTheme } from "@/hooks/use-system-theme";
-import { usePasteActions } from "@/hooks/use-paste-actions";
 
 import { initializeBetterAuth } from "@/features/auth/lib/initialize-better-auth";
 
@@ -25,7 +24,6 @@ export default function App() {
   useContextMenu();
 
   const { writeTextToSystemClipboard } = useClipboard();
-  const { pasteClipboardItem } = usePasteActions();
 
   return (
     <TooltipProvider>
@@ -39,10 +37,7 @@ export default function App() {
           keepMounted
           className="flex flex-col overflow-hidden min-h-0 data-hidden:hidden"
         >
-          <ClipboardTab
-            onPaste={pasteClipboardItem}
-            isActiveTab={activeTab === "clipboard"}
-          />
+          <ClipboardTab />
         </TabsContent>
 
         <TabsContent

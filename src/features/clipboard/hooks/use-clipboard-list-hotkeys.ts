@@ -11,8 +11,6 @@ type UseClipboardListHotkeysParams = {
   isActive: boolean;
   isSearching: boolean;
   onPaste?: (item: ClipboardItemType) => void;
-  onToggleFavorite: (id: number) => void;
-  onToggleFavoriteFilter?: () => void;
 };
 
 export function useClipboardListHotkeys({
@@ -20,8 +18,6 @@ export function useClipboardListHotkeys({
   isActive,
   isSearching,
   onPaste,
-  onToggleFavorite,
-  onToggleFavoriteFilter,
 }: UseClipboardListHotkeysParams) {
   const { hotkeys } = useHotkeysConfig();
 
@@ -75,16 +71,6 @@ export function useClipboardListHotkeys({
   });
 
   useHotkey(
-    hotkeys.favorite,
-    () => {
-      if (activeIndex >= 0 && items[activeIndex]) {
-        onToggleFavorite(items[activeIndex].id);
-      }
-    },
-    { enabled: activeIndex >= 0 && !hotkeysDisabled },
-  );
-
-  useHotkey(
     hotkeys.colorMenu,
     () => {
       if (activeIndex >= 0 && items[activeIndex]?.detected_color) {
@@ -93,10 +79,6 @@ export function useClipboardListHotkeys({
     },
     { enabled: activeIndex >= 0 && !hotkeysDisabled },
   );
-
-  useHotkey(hotkeys.favoritesFirst, () => onToggleFavoriteFilter?.(), {
-    enabled: !hotkeysDisabled,
-  });
 
   useHotkey("ArrowDown", moveDown, { enabled: isActive });
   useHotkey("ArrowUp", moveUp, { enabled: isActive });
