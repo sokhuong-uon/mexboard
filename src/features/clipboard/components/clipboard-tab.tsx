@@ -12,8 +12,10 @@ export function ClipboardTab() {
   );
 
   const { historyLimit } = useSettings();
-  const { history, hasMore, loadMore, isLoaded, currentContent, deleteItem } =
-    useClipboardHistory(historyLimit, false);
+  const { history, hasMore, loadMore, isLoaded } = useClipboardHistory(
+    historyLimit,
+    false,
+  );
 
   const { filteredItems } = useClipboardFilters(history, searchQuery);
 
@@ -29,8 +31,6 @@ export function ClipboardTab() {
         ) : (
           <ClipboardList
             items={filteredItems}
-            currentContent={currentContent}
-            onDelete={deleteItem}
             isSearching={isSearching}
             hasMore={hasMore && !isSearching}
             onLoadMore={loadMore}

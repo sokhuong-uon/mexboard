@@ -1,17 +1,10 @@
 import { EmptyState } from "@/components/clipboard-empty-state";
 import { Button } from "@/components/ui/button";
 import { ClipboardItemsGrid } from "@/components/clipboard-items-grid";
-import {
-  ClipboardItem as ClipboardItemType,
-  ClipboardContent,
-} from "@/types/clipboard";
-import { isItemCopied } from "@/features/clipboard/utils/is-item-copied";
-import { SortableItem } from "./sortable-item";
+import { ClipboardItem as ClipboardItemType } from "@/types/clipboard";
 
 type ClipboardListProps = {
   items: ClipboardItemType[];
-  currentContent: ClipboardContent;
-  onDelete: (id: number) => void;
   isSearching?: boolean;
   hasMore?: boolean;
   onLoadMore?: () => void;
@@ -19,8 +12,6 @@ type ClipboardListProps = {
 
 export const ClipboardList = ({
   items,
-  currentContent,
-  onDelete,
   isSearching = false,
   hasMore = false,
   onLoadMore,
@@ -41,18 +32,5 @@ export const ClipboardList = ({
     </li>
   );
 
-  return (
-    <ClipboardItemsGrid
-      items={items}
-      footer={loadMoreButton}
-      renderItem={(item) => (
-        <SortableItem
-          key={item.id}
-          item={item}
-          isCopied={isItemCopied(item, currentContent)}
-          onDelete={onDelete}
-        />
-      )}
-    />
-  );
+  return <ClipboardItemsGrid items={items} footer={loadMoreButton} />;
 };

@@ -1,14 +1,16 @@
 import { Button } from "@/components/ui/button";
 import { Copy, Check } from "lucide-react";
 import { cn } from "@/utils/cn";
-import { ComponentProps, useState } from "react";
+import { ComponentProps } from "react";
 import { useClipboardItem } from "@/features/clipboard/hooks/use-clipboard-item";
 import { useClipboard } from "@/hooks/use-clipboard";
+import { useInternalCurrentClipboardItem } from "@/features/clipboard/stores/internal-current-clipboard-item";
 
 export function CopyToClipboardButton({
   className,
 }: ComponentProps<typeof Button>) {
-  const [isCopied, setIsCopied] = useState<boolean>(false);
+  const { currentClipboard: currentInternalClipboard, setCurrentClipboard } =
+    useInternalCurrentClipboardItem();
 
   const clipboard = useClipboardItem();
   const { writeImageToSystemClipboard, writeTextToSystemClipboard } =
@@ -17,12 +19,14 @@ export function CopyToClipboardButton({
   const onCopy = async () => {
     if (clipboard.content_type === "text" && clipboard.text_content) {
       await writeTextToSystemClipboard(clipboard.text_content);
-      setIsCopied(true);
+      setCurrentClipboard(clipboard);
     } else if (clipboard.content_type === "image" && clipboard.image_data) {
       await writeImageToSystemClipboard(clipboard.image_data);
-      setIsCopied(true);
+      setCurrentClipboard(clipboard);
     }
   };
+
+  const isCopied = currentInternalClipboard?.id === clipboard.id;
 
   return (
     <Button

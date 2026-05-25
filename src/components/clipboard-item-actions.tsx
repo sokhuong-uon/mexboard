@@ -6,16 +6,23 @@ import {
   TooltipContent,
 } from "@/components/ui/tooltip";
 import { CopyToClipboardButton } from "@/features/clipboard/components/copy-to-clipboard-button";
+import { useInternalCurrentClipboardItem } from "@/features/clipboard/stores/internal-current-clipboard-item";
+import { useClipboardItem } from "@/features/clipboard/hooks/use-clipboard-item";
+import { useClipboardHistory } from "@/features/clipboard/hooks/use-clipboard-history";
+import { useSettings } from "@/hooks/use-settings";
 
-type ClipboardItemActionsProps = {
-  isCopied: boolean;
-  onDelete: () => void;
-};
+export const ClipboardItemActions = () => {
+  const { historyLimit } = useSettings();
+  const { deleteItem } = useClipboardHistory(historyLimit, false);
 
-export const ClipboardItemActions = ({
-  isCopied,
-  onDelete,
-}: ClipboardItemActionsProps) => {
+  const currentInternalClipboard = useInternalCurrentClipboardItem(
+    (state) => state.currentClipboard,
+  );
+
+  const item = useClipboardItem();
+
+  const isCopied = currentInternalClipboard?.id !== item.id;
+
   return (
     <div className="flex invisible group-hover:visible flex-col items-center gap-0.5 shrink-0 pt-0.5">
       <Tooltip>
@@ -32,7 +39,7 @@ export const ClipboardItemActions = ({
             <Button
               variant="ghost"
               size="icon-xs"
-              onClick={onDelete}
+              onClick={() => deleteItem(item.id)}
               className="text-neutral-400 dark:text-neutral-600 dark:hover:text-foreground hover:text-foreground cursor-pointer"
             />
           }

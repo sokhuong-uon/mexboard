@@ -6,16 +6,12 @@ import { ClipboardItemContextProvider } from "@/features/clipboard/components/cl
 
 export const SortableItem = memo(function SortableItem({
   item,
-  isCopied,
-  onDelete,
 }: {
   item: ClipboardItemType;
-  isCopied: boolean;
-  onDelete: (id: number) => void;
 }) {
   return (
     <ClipboardItemContextProvider item={item}>
-      <ClipboardItemCard isCopied={isCopied} onDelete={onDelete} />
+      <ClipboardItemCard />
     </ClipboardItemContextProvider>
   );
 });
