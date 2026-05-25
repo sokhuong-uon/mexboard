@@ -1,17 +1,14 @@
 import { useCallback } from "react";
 
 import { useClipboard } from "@/hooks/use-clipboard";
-import { ErrorBanner } from "@/components/clipboard-error-banner";
 import { ClipboardList } from "@/components/clipboard-list";
 import { ClipboardItemSkeletonList } from "@/components/clipboard-item-skeleton";
 import { ClipboardHeader } from "@/components/clipboard-window-header";
 import { useSettings } from "@/hooks/use-settings";
 import { useClipboardHistory } from "@/features/clipboard/hooks/use-clipboard-history";
-import { useClipboardMonitor } from "@/hooks/use-clipboard-monitor";
 import { useClipboardFilters } from "@/hooks/use-clipboard-filters";
 import { ClipboardItem } from "@/types/clipboard";
 import { useClipboardSearchQueryStore } from "@/features/clipboard/stores/clipboard-search-query-store";
-import { useClipboardMonitoringStore } from "@/features/clipboard/stores/clipboard-monitoring-store";
 
 type ClipboardTabProps = {
   onPaste: (item: ClipboardItem) => Promise<void>;
@@ -19,18 +16,8 @@ type ClipboardTabProps = {
 };
 
 export function ClipboardTab({ onPaste, isActiveTab }: ClipboardTabProps) {
-  const {
-    readContent,
-    writeTextToSystemClipboard,
-    writeImageToSystemClipboard,
-    reinitialize,
-    error,
-    dismissError,
-  } = useClipboard();
-
-  const isMonitoring = useClipboardMonitoringStore(
-    (state) => state.isMonitoring,
-  );
+  const { writeTextToSystemClipboard, writeImageToSystemClipboard } =
+    useClipboard();
 
   const searchQuery = useClipboardSearchQueryStore(
     (state) => state.searchQuery,
@@ -43,18 +30,10 @@ export function ClipboardTab({ onPaste, isActiveTab }: ClipboardTabProps) {
     loadMore,
     isLoaded,
     currentContent,
-    setCurrentContent,
-    addContentToHistory,
     deleteItem,
     toggleFavorite,
     splitEnvItem,
   } = useClipboardHistory(historyLimit, false);
-
-  const { previousContentRef } = useClipboardMonitor({
-    onClipboardChange: addContentToHistory,
-    onCurrentContentUpdate: setCurrentContent,
-    isMonitoring,
-  });
 
   const { filters, setFilters, filteredItems, toggleFavoriteFilter } =
     useClipboardFilters(history, searchQuery);
@@ -72,16 +51,6 @@ export function ClipboardTab({ onPaste, isActiveTab }: ClipboardTabProps) {
     [writeTextToSystemClipboard, writeImageToSystemClipboard],
   );
 
-  const handleRetry = useCallback(async () => {
-    await reinitialize();
-    await new Promise((resolve) => setTimeout(resolve, 200));
-    const content = await readContent();
-    if (content.type !== "empty") {
-      previousContentRef.current = content;
-      setCurrentContent(content);
-    }
-  }, [reinitialize, readContent, previousContentRef, setCurrentContent]);
-
   return (
     <>
       <ClipboardHeader
@@ -90,14 +59,6 @@ export function ClipboardTab({ onPaste, isActiveTab }: ClipboardTabProps) {
         filters={filters}
         onFiltersChange={setFilters}
       />
-
-      {error && (
-        <ErrorBanner
-          error={error}
-          onRetry={handleRetry}
-          onDismiss={dismissError}
-        />
-      )}
 
       <div className="flex-1 overflow-y-auto">
         {!isLoaded ? (
