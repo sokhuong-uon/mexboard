@@ -11,7 +11,6 @@ import {
   Star,
 } from "lucide-react";
 import {
-  ClipboardFilters,
   CONTENT_FILTER_LABELS,
   ContentFilter,
   DateRange,
@@ -30,6 +29,11 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+
+import { useSettings } from "@/hooks/use-settings";
+import { useClipboardHistory } from "@/features/clipboard/hooks/use-clipboard-history";
+import { useClipboardFilters } from "@/hooks/use-clipboard-filters";
+import { useClipboardSearchQueryStore } from "@/features/clipboard/stores/clipboard-search-query-store";
 
 const CONTENT_FILTER_ICONS: Record<ContentFilter, React.ReactNode> = {
   image: <Image className="size-4" />,
@@ -61,15 +65,16 @@ const DATE_RANGE_OPTIONS: {
   },
 ];
 
-type ClipboardFilterMenuProps = {
-  filters: ClipboardFilters;
-  onFiltersChange: (filters: ClipboardFilters) => void;
-};
+export const ClipboardFilterMenu = () => {
+  const searchQuery = useClipboardSearchQueryStore(
+    (state) => state.searchQuery,
+  );
 
-export const ClipboardFilterMenu = ({
-  filters,
-  onFiltersChange,
-}: ClipboardFilterMenuProps) => {
+  const { historyLimit } = useSettings();
+  const { history } = useClipboardHistory(historyLimit, false);
+
+  const { filters, setFilters } = useClipboardFilters(history, searchQuery);
+
   const hasActiveFilters =
     filters.favorite ||
     filters.contentTypes.size > 0 ||
@@ -81,7 +86,7 @@ export const ClipboardFilterMenu = ({
     (filters.dateRange !== "all" ? 1 : 0);
 
   const toggleFavorite = () => {
-    onFiltersChange({ ...filters, favorite: !filters.favorite });
+    setFilters({ ...filters, favorite: !filters.favorite });
   };
 
   const toggleContentType = (type: ContentFilter) => {
@@ -91,15 +96,15 @@ export const ClipboardFilterMenu = ({
     } else {
       next.add(type);
     }
-    onFiltersChange({ ...filters, contentTypes: next });
+    setFilters({ ...filters, contentTypes: next });
   };
 
   const setDateRange = (range: DateRange) => {
-    onFiltersChange({ ...filters, dateRange: range });
+    setFilters({ ...filters, dateRange: range });
   };
 
   const clearFilters = () => {
-    onFiltersChange({ ...EMPTY_FILTERS, contentTypes: new Set() });
+    setFilters({ ...EMPTY_FILTERS, contentTypes: new Set() });
   };
 
   return (

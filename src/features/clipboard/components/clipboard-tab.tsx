@@ -15,16 +15,13 @@ export function ClipboardTab() {
   const { history, hasMore, loadMore, isLoaded, currentContent, deleteItem } =
     useClipboardHistory(historyLimit, false);
 
-  const { filters, setFilters, filteredItems } = useClipboardFilters(
-    history,
-    searchQuery,
-  );
+  const { filteredItems } = useClipboardFilters(history, searchQuery);
 
   const isSearching = searchQuery.trim().length > 0;
 
   return (
     <>
-      <ClipboardTabHeader filters={filters} onFiltersChange={setFilters} />
+      <ClipboardTabHeader />
 
       <div className="flex-1 overflow-y-auto">
         {!isLoaded ? (
