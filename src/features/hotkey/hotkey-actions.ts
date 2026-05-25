@@ -22,16 +22,6 @@ function getToggleWindowDefault(): Hotkey {
 type HotkeyMeta = { label: string; defaultKey: Hotkey };
 
 export const HOTKEY_META = {
-  moveDown: { label: "Move down", defaultKey: "J" },
-  moveUp: { label: "Move up", defaultKey: "K" },
-  copy: { label: "Copy item", defaultKey: "C" },
-  paste: { label: "Paste item", defaultKey: "P" },
-  delete: { label: "Delete item", defaultKey: "D" },
-  favorite: { label: "Toggle favorite", defaultKey: "F" },
-  colorMenu: { label: "Color menu", defaultKey: "A" },
-  favoritesFirst: { label: "Favorites first", defaultKey: "O" },
-  jumpTop: { label: "Jump to top", defaultKey: "G" },
-  jumpBottom: { label: "Jump to bottom", defaultKey: "Shift+G" },
   cycleTabs: { label: "Cycle tabs", defaultKey: "T" },
   search: { label: "Focus search", defaultKey: "/" },
   toggleWindowVisibility: {
