@@ -1,3 +1,10 @@
+# [1.24.0](https://github.com/sokhuong-uon/mexboard/compare/v1.23.4...v1.24.0) (2026-05-25)
+
+
+### Features
+
+* use shadcn input group to improve clipboard search box ([ecfb600](https://github.com/sokhuong-uon/mexboard/commit/ecfb60083cb08aa1043a5044140713ec287a71ad))
+
 ## [1.23.4](https://github.com/sokhuong-uon/mexboard/compare/v1.23.3...v1.23.4) (2026-05-25)
 
 
