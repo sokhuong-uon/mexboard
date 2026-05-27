@@ -8,6 +8,7 @@ import { useClearClipboardHistory } from "@/features/clipboard/hooks/use-clear-c
 import { useHasClipboardHistory } from "@/features/clipboard/hooks/use-has-clipboard-history";
 import { SettingRow } from "../setting-row";
 import { useSettings } from "@/hooks/use-settings";
+import { Button } from "@/components/ui/button";
 
 export function GeneralSettings() {
   const isMonitoring = useClipboardMonitoringStore(
@@ -81,14 +82,15 @@ export function GeneralSettings() {
           <div className="py-2">
             <SheetClose
               render={
-                <button
+                <Button
                   onClick={clearAll}
-                  className="flex items-center gap-2 text-[13px] text-destructive/80 hover:text-destructive transition-colors"
+                  variant="destructive"
+                  className="flex items-center gap-2 cursor-pointer"
                 />
               }
             >
               <Trash2 className="size-3.5" />
-              Clear all history
+              Clear clipboard
             </SheetClose>
           </div>
         </>
