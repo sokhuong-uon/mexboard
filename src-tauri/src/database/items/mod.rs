@@ -1,5 +1,9 @@
+mod bump;
+mod clear;
+mod dedupe;
 mod delete;
-mod hash;
+mod get_all;
 mod insert;
-mod query;
+mod toggle_favorite;
 mod update;
+mod update_sort_order;

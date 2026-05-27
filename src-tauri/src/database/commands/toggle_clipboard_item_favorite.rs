@@ -1,4 +1,4 @@
-use crate::database::{ClipboardItemRow, Database};
+use crate::database::{ClipboardSchema, Database};
 use tauri::State;
 
 #[tauri::command]
@@ -6,6 +6,6 @@ use tauri::State;
 pub fn toggle_clipboard_item_favorite(
     id: i16,
     database: State<'_, Database>,
-) -> Result<ClipboardItemRow, String> {
+) -> Result<ClipboardSchema, String> {
     database.toggle_favorite(id)
 }

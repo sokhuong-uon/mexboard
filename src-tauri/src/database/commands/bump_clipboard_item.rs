@@ -1,4 +1,4 @@
-use crate::database::{ClipboardItemRow, Database};
+use crate::database::{ClipboardSchema, Database};
 use tauri::State;
 
 #[tauri::command]
@@ -7,6 +7,6 @@ pub fn bump_clipboard_item(
     id: i16,
     sort_order: String,
     database: State<'_, Database>,
-) -> Result<ClipboardItemRow, String> {
-    database.bump_item(id, &sort_order)
+) -> Result<ClipboardSchema, String> {
+    database.bump(id, &sort_order)
 }

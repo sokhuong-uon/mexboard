@@ -1,4 +1,4 @@
-use crate::database::{ClipboardItemRow, Database};
+use crate::database::{ClipboardSchema, Database};
 use tauri::State;
 
 #[tauri::command]
@@ -8,6 +8,6 @@ pub fn get_all_clipboard_items(
     offset: i16,
     favorites_first: bool,
     database: State<'_, Database>,
-) -> Result<Vec<ClipboardItemRow>, String> {
-    database.get_all_items(limit, offset, favorites_first)
+) -> Result<Vec<ClipboardSchema>, String> {
+    database.get_all(limit, offset, favorites_first)
 }

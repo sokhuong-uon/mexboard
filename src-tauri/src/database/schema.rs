@@ -5,67 +5,84 @@ use crate::schema::SelectClipboardItems;
 pub type DbResult<T> = Result<T, String>;
 
 #[derive(Debug, Serialize, Deserialize, Clone, specta::Type)]
-pub struct ClipboardItemRow {
-    pub id: i16,
-    pub content_type: String,
-    pub text_content: Option<String>,
-    pub image_data: Option<String>,
-    pub image_width: Option<i32>,
-    pub image_height: Option<i32>,
-    pub line_count: Option<i16>,
-    pub source_app: Option<String>,
-    pub is_favorite: bool,
+pub struct ClipboardSchema {
+    pub id: u32,
+
     pub sort_order: String,
-    pub kv_key: Option<String>,
-    pub detected_date: Option<String>,
-    pub detected_color: Option<String>,
-    pub is_env: bool,
-    pub is_secret: bool,
+
+    pub content: Option<String>,
+
+    pub image: Option<u8>,
+    pub image_preview: Option<u8>,
+    pub width: Option<u32>,
+    pub height: Option<u32>,
+
+    pub hash: String,
+    pub mime: Option<String>,
+
+    pub source_app: Option<String>,
+
+    pub is_favorite: bool,
     pub note: Option<String>,
-    pub content_hash: Option<String>,
-    pub file_mime: Option<String>,
+
+    pub detected_date: Option<String>,
+
+    pub is_color: bool,
+
+    pub kv: Option<String>,
+
+    pub is_secret: bool,
+
     pub created_at: String,
     pub updated_at: String,
 }
 
-impl From<SelectClipboardItems> for ClipboardItemRow {
-    fn from(row: SelectClipboardItems) -> Self {
+impl From<SelectClipboardItems> for ClipboardSchema {
+    fn from(clipboard: SelectClipboardItems) -> Self {
         Self {
-            id: row.id as i16,
-            content_type: row.content_type,
-            text_content: row.text_content,
-            image_data: row.image_data,
-            image_width: row.image_width.map(|v| v as i32),
-            image_height: row.image_height.map(|v| v as i32),
-            line_count: row.line_count.map(|v| v as i16),
-            source_app: row.source_app,
-            is_favorite: row.is_favorite != 0,
-            sort_order: row.sort_order,
-            kv_key: row.kv_key,
-            detected_date: row.detected_date,
-            detected_color: row.detected_color,
-            is_env: row.is_env != 0,
-            is_secret: row.is_secret != 0,
-            note: row.note,
-            content_hash: row.content_hash,
-            file_mime: row.file_mime,
-            created_at: row.created_at,
-            updated_at: row.updated_at,
+            id: clipboard.id,
+            sort_order: clipboard.sort_order,
+
+            content: clipboard.content,
+            hash: clipboard.hash,
+            mime: clipboard.mime,
+
+            image: clipboard.image,
+            image_preview: clipboard.image_preview,
+            width: clipboard.width,
+            height: clipboard.height,
+
+            source_app: clipboard.source_app,
+
+            is_favorite: clipboard.is_favorite,
+            note: clipboard.note,
+
+            kv: clipboard.kv,
+
+            detected_date: clipboard.detected_date,
+            is_secret: clipboard.is_secret,
+            is_color: clipboard.is_color,
+
+            created_at: clipboard.created_at,
+            updated_at: clipboard.updated_at,
         }
     }
 }
 
 #[derive(Debug, Deserialize, specta::Type)]
 pub struct InsertClipboardItemParams {
-    pub content_type: String,
-    pub text_content: Option<String>,
-    pub image_data: Option<String>,
-    pub image_width: Option<i32>,
-    pub image_height: Option<i32>,
-    pub line_count: Option<i16>,
+    pub content: Option<String>,
+
+    pub image: Option<u8>,
+    pub image_preview: Option<u8>,
+    pub width: Option<i32>,
+    pub height: Option<i32>,
+
     pub source_app: Option<String>,
+
+    pub kv: Option<String>,
     pub sort_order: String,
-    pub kv_key: Option<String>,
+
     pub created_at: String,
     pub updated_at: String,
 }

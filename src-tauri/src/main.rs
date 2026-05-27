@@ -5,11 +5,13 @@ mod caret;
 mod clipboard;
 mod clipboard_monitor;
 mod commands;
+mod crypto;
 mod database;
 mod detection;
 mod schema;
 mod shortcuts;
 mod tray;
+mod utils;
 pub mod websocket;
 mod window;
 
