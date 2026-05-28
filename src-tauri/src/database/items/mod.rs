@@ -1,6 +1,6 @@
 mod bump;
+mod check_duplication_by_hash;
 mod clear;
-mod dedupe;
 mod delete;
 mod get_all;
 mod insert;
