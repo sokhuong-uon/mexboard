@@ -1,7 +1,6 @@
-use crate::handle_command;
 use std::sync::Mutex;
 use tauri::{AppHandle, Manager};
-use tauri_plugin_global_shortcut::{GlobalShortcutExt, Shortcut, ShortcutEvent, ShortcutState};
+use tauri_plugin_global_shortcut::{GlobalShortcutExt, Shortcut};
 use tauri_plugin_store::StoreExt;
 
 #[cfg(target_os = "macos")]
@@ -18,19 +17,6 @@ const TOGGLE_FIELD: &str = "toggleWindowVisibility";
 
 #[derive(Default)]
 pub struct ToggleShortcut(Mutex<Option<Shortcut>>);
-
-pub fn on_event(app: &AppHandle, shortcut: &Shortcut, event: ShortcutEvent) {
-    if event.state() != ShortcutState::Pressed {
-        return;
-    }
-    let matches = app
-        .try_state::<ToggleShortcut>()
-        .and_then(|s| s.0.lock().ok().map(|g| g.as_ref() == Some(shortcut)))
-        .unwrap_or(false);
-    if matches {
-        handle_command(app, "toggle");
-    }
-}
 
 pub fn register(app: &AppHandle) {
     let accelerator = load_accelerator(app);

@@ -6,19 +6,14 @@ mod system;
 mod window;
 
 pub use clipboard::*;
+pub use keyring::init as init_keyring;
 pub use keyring::*;
 pub use media::*;
 pub use shortcuts::*;
 pub use system::*;
-pub use window::*;
-
-pub use keyring::init as init_keyring;
 
 use crate::database::*;
-use crate::main_window;
 use crate::websocket::*;
-
-use tauri::{AppHandle, Manager};
 use tauri_specta::{collect_commands, Builder};
 
 pub fn create_command_builder() -> Builder<tauri::Wry> {
@@ -51,33 +46,4 @@ pub fn create_command_builder() -> Builder<tauri::Wry> {
         toggle_clipboard_item_favorite,
         // End: Database
     ])
-}
-
-pub fn handle_command(app: &AppHandle, command: &str) {
-    match command {
-        "show" => {
-            show_window_at_cursor(app.clone());
-        }
-        "hide" => {
-            if let Some(window) = app.get_webview_window("main") {
-                let _ = window.hide();
-                main_window::set_visible(false);
-            }
-        }
-        "toggle" => {
-            if main_window::is_visible() {
-                if let Some(window) = app.get_webview_window("main") {
-                    let _ = window.hide();
-                    main_window::set_visible(false);
-                }
-            } else {
-                show_window_at_cursor(app.clone());
-            }
-        }
-        _ => {}
-    }
-}
-
-pub fn parse_command_from_args(args: &[String]) -> &str {
-    args.get(1).map(|s| s.as_str()).unwrap_or("")
 }

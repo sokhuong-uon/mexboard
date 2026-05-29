@@ -12,7 +12,6 @@ export function HotkeysSettings() {
     hotkeys,
     setHotkey: onSetHotkey,
     resetHotkey: onResetHotkey,
-    resetAll: onResetAll,
   } = useHotkeysConfig();
 
   const [recordingAction, setRecordingAction] = useState<HotkeyAction | null>(
@@ -26,10 +25,7 @@ export function HotkeysSettings() {
           Keyboard shortcuts
         </span>
 
-        <button
-          onClick={onResetAll}
-          className="text-[11px] text-muted-foreground hover:text-foreground transition-colors"
-        >
+        <button className="text-[11px] text-muted-foreground hover:text-foreground transition-colors">
           Reset all
         </button>
       </div>

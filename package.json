@@ -3,7 +3,7 @@
   "private": false,
   "version": "1.25.0",
   "type": "module",
-  "packageManager": "pnpm@10.27.0",
+  "packageManager": "pnpm@11.3.0+sha512.2c403d6594527287672b1f7056343a1f7c3634036a67ffabfcc2b3d7595d843768f8787148d1b57cf7956c90606bbd192857c363af19e96d2d0ec9ec5741d215",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
@@ -25,6 +25,7 @@
     "@tanstack/react-query": "^5.95.2",
     "@tanstack/react-virtual": "^3.13.23",
     "@tauri-apps/api": "^2.11.0",
+    "@tauri-apps/plugin-cli": "~2.4.1",
     "@tauri-apps/plugin-deep-link": "~2.4.8",
     "@tauri-apps/plugin-global-shortcut": "~2",
     "@tauri-apps/plugin-http": "~2.5.8",

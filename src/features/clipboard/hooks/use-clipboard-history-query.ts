@@ -1,7 +1,6 @@
 import { useCallback, useRef } from "react";
 import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
 import { ClipboardItem } from "@/types/clipboard";
-import { clipboardDb } from "@/hooks/use-clipboard-db";
 
 export const CLIPBOARD_HISTORY_KEY = "clipboard-history";
 
@@ -23,16 +22,10 @@ export const useClipboardHistoryQuery = (
 
   const { data, fetchNextPage, hasNextPage, isLoading } = useInfiniteQuery({
     queryKey: clipboardHistoryQueryKey(maxItems, favoritesFirst),
-    queryFn: async ({ pageParam = 0 }): Promise<ClipboardHistoryPage> => {
-      // Fetch one extra row to detect "has more" without a separate count query.
-      const rows = await clipboardDb.getAllItems(
-        maxItems + 1,
-        pageParam,
-        favoritesFirst,
-      );
+    queryFn: async (): Promise<ClipboardHistoryPage> => {
       return {
-        items: rows.slice(0, maxItems),
-        hasMore: rows.length > maxItems,
+        items: [],
+        hasMore: false,
       };
     },
     initialPageParam: 0,

@@ -28,9 +28,32 @@
   "plugins": {
     "deep-link": {
       "desktop": {
-        "schemes": [
-          "mexboard"
-        ]
+        "schemes": ["mexboard"]
+      }
+    },
+    "cli": {
+      "description": "Mexboard CLI",
+      "subcommands": {
+        "show": {
+          "args": [
+            {
+              "name": "tab",
+              "description": "Tab to show (clipboards, symbols, emojis)",
+              "short": "t",
+              "takesValue": true,
+              "possibleValues": ["clipboards", "symbols", "emojis"]
+            },
+            {
+              "name": "no-default-features",
+              "description": "Do nothing"
+            },
+            {
+              "name": "color",
+              "takesValue": true,
+              "description": "Do nothing"
+            }
+          ]
+        }
       }
     }
   },

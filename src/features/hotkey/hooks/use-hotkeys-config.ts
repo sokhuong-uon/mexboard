@@ -8,11 +8,6 @@ import {
   type HotkeyAction,
   type HotkeyConfig,
 } from "@/features/hotkey/hotkey-actions";
-import {
-  loadHotkeysFromSettings,
-  saveHotkeysToSettings,
-  registerToggleShortcut,
-} from "@/features/hotkey/hotkey-storage";
 
 export function useHotkeysConfig() {
   const [hotkeys, setHotkeysState] = useState<HotkeyConfig>(getDefaultHotkeys);
@@ -20,10 +15,6 @@ export function useHotkeysConfig() {
 
   useEffect(() => {
     (async () => {
-      const stored = await loadHotkeysFromSettings();
-      if (stored) {
-        setHotkeysState((prev) => ({ ...prev, ...stored }));
-      }
       setIsLoaded(true);
     })();
   }, []);
@@ -31,12 +22,8 @@ export function useHotkeysConfig() {
   const setHotkey = useCallback((action: HotkeyAction, hotkey: Hotkey) => {
     setHotkeysState((prev) => {
       const next = { ...prev, [action]: hotkey };
-      saveHotkeysToSettings(next);
       return next;
     });
-    if (action === "toggleWindowVisibility") {
-      void registerToggleShortcut(hotkey);
-    }
   }, []);
 
   const resetHotkey = useCallback(
@@ -46,13 +33,6 @@ export function useHotkeysConfig() {
     [setHotkey],
   );
 
-  const resetAll = useCallback(() => {
-    const defaults = getDefaultHotkeys();
-    setHotkeysState(defaults);
-    saveHotkeysToSettings(defaults);
-    void registerToggleShortcut(defaults.toggleWindowVisibility);
-  }, []);
-
   const formatted = useMemo(
     () =>
       Object.fromEntries(
@@ -61,5 +41,5 @@ export function useHotkeysConfig() {
     [hotkeys],
   );
 
-  return { hotkeys, formatted, setHotkey, resetHotkey, resetAll, isLoaded };
+  return { hotkeys, formatted, setHotkey, resetHotkey, isLoaded };
 }

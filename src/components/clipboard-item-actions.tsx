@@ -8,13 +8,8 @@ import {
 import { CopyToClipboardButton } from "@/features/clipboard/components/copy-to-clipboard-button";
 import { useInternalCurrentClipboardItem } from "@/features/clipboard/stores/internal-current-clipboard-item";
 import { useClipboardItem } from "@/features/clipboard/hooks/use-clipboard-item";
-import { useClipboardHistory } from "@/features/clipboard/hooks/use-clipboard-history";
-import { useSettings } from "@/hooks/use-settings";
 
 export const ClipboardItemActions = () => {
-  const { historyLimit } = useSettings();
-  const { deleteItem } = useClipboardHistory(historyLimit, false);
-
   const currentInternalClipboard = useInternalCurrentClipboardItem(
     (state) => state.currentClipboard,
   );
@@ -39,7 +34,6 @@ export const ClipboardItemActions = () => {
             <Button
               variant="ghost"
               size="icon-xs"
-              onClick={() => deleteItem(item.id)}
               className="text-neutral-400 dark:text-neutral-600 dark:hover:text-foreground hover:text-foreground cursor-pointer"
             />
           }

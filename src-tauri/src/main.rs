@@ -2,6 +2,7 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 mod caret;
+mod cli;
 mod clipboard;
 mod clipboard_monitor;
 mod commands;
@@ -17,7 +18,7 @@ mod window;
 
 use clipboard::ClipboardManager;
 use clipboard_monitor::MonitorState;
-use commands::{create_command_builder, handle_command, parse_command_from_args};
+use commands::create_command_builder;
 use tauri::Manager;
 use tauri_plugin_deep_link::DeepLinkExt;
 use tauri_plugin_notification::NotificationExt;
@@ -25,9 +26,6 @@ use websocket::WebSocketState;
 use window::main_window;
 
 fn main() {
-    let args: Vec<String> = std::env::args().collect();
-    let initial_command = parse_command_from_args(&args).to_string();
-
     let command_builder = create_command_builder();
 
     #[cfg(debug_assertions)]
@@ -45,11 +43,11 @@ fn main() {
     };
 
     tauri::Builder::default()
+        .plugin(tauri_plugin_cli::init())
         .plugin(tauri_plugin_log::Builder::new().level(log_level).build())
         .plugin(tauri_plugin_store::Builder::new().build())
         .plugin(tauri_plugin_single_instance::init(|app, args, _cwd| {
-            let command = parse_command_from_args(&args);
-            handle_command(app, command);
+            cli::handle_cli_args(app, Some(args));
         }))
         .plugin(tauri_plugin_deep_link::init())
         .plugin(tauri_plugin_notification::init())
@@ -57,8 +55,8 @@ fn main() {
         .plugin(tauri_plugin_os::init())
         .plugin(
             tauri_plugin_global_shortcut::Builder::new()
-                .with_handler(|app, shortcut, event| {
-                    shortcuts::on_event(app, shortcut, event);
+                .with_handler(|_app, shortcut, _event| {
+                    log::info!("Received shortcut: {:?}", shortcut);
                 })
                 .build(),
         )
@@ -69,6 +67,8 @@ fn main() {
         .manage(shortcuts::ToggleShortcut::default())
         .manage(WebSocketState::new())
         .setup(move |app| {
+            cli::handle_cli_args(app, None);
+
             #[cfg(any(target_os = "linux", all(debug_assertions, windows)))]
             app.deep_link().register_all()?;
 
@@ -79,7 +79,7 @@ fn main() {
 
             caret::init();
             tray::setup(app)?;
-            main_window::setup(app, &initial_command);
+            main_window::setup(app);
 
             clipboard_monitor::start_monitor(app.handle());
 

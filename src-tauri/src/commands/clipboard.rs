@@ -1,7 +1,6 @@
 use crate::clipboard::ClipboardManager;
 use crate::clipboard_monitor::MonitorState;
 use crate::detection::env;
-use crate::main_window;
 use crate::utils::simulate_ctrl_v::simulate_ctrl_v;
 use std::sync::atomic::Ordering;
 use tauri::{AppHandle, Manager, State};
@@ -91,7 +90,6 @@ pub async fn paste_item(
 
     if let Some(window) = app.get_webview_window("main") {
         let _ = window.hide();
-        main_window::set_visible(false);
     }
 
     tokio::time::sleep(std::time::Duration::from_millis(100)).await;

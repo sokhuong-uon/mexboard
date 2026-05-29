@@ -2,7 +2,6 @@ import { RefObject, useCallback } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { generateKeyBetween } from "jittered-fractional-indexing";
 import { ClipboardItem } from "@/types/clipboard";
-import { clipboardDb } from "@/hooks/use-clipboard-db";
 import {
   ClipboardHistoryPage,
   clipboardHistoryQueryKey,
@@ -58,9 +57,6 @@ export const useReorderClipboardItems = (
       );
 
       try {
-        await clipboardDb.updateSortOrders([
-          { id: activeId, sort_order: newSortOrder },
-        ]);
       } catch (err) {
         console.error("Failed to update sort order:", err);
         invalidate();

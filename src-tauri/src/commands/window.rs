@@ -1,5 +1,4 @@
 use crate::caret;
-use crate::main_window;
 use tauri::{AppHandle, Manager, PhysicalPosition};
 
 pub fn show_window_at_cursor(app: AppHandle) {
@@ -67,6 +66,5 @@ pub fn show_window_at_cursor(app: AppHandle) {
         let _ = window.show();
         let _ = window.set_focus();
         let _ = window.set_always_on_top(false);
-        main_window::set_visible(true);
     }
 }
