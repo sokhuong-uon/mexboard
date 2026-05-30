@@ -9,7 +9,7 @@ pub fn is_clipboard_instance_exists(mexboard: &MexBoard) -> Result<(), String> {
     if clipboard_guard.is_none() {
         *clipboard_guard = Some(
             arboard::Clipboard::new()
-                .map_err(|e| format!("Failed to create clipboard instance: {}", e))?,
+                .map_err(|err| format!("Failed to create clipboard instance: {}", err))?,
         );
     }
 

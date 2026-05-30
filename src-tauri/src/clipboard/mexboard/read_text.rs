@@ -11,11 +11,11 @@ pub async fn read_text(mexboard: &MexBoard) -> Result<String, String> {
             tokio::time::sleep(Duration::from_millis(delay_ms)).await;
         }
 
-        if let Err(e) = mexboard.is_clipboard_instance_exists() {
+        if let Err(err) = mexboard.is_clipboard_instance_exists() {
             if attempt < MAX_RETRIES - 1 {
                 continue;
             } else {
-                return Err(format!("Failed to create clipboard: {}", e));
+                return Err(format!("No clipboard instance available: {}", err));
             }
         }
 
@@ -33,17 +33,18 @@ pub async fn read_text(mexboard: &MexBoard) -> Result<String, String> {
             }
         };
 
+        log::info!("Read text result: {:?}", result);
+
         match result {
             Ok(text) => return Ok(text),
-            Err(e) => {
-                let error_str = e.to_string();
+            Err(err) => {
+                let error_str = err.to_string();
 
                 if error_str.contains("empty") || error_str.contains("not available") {
                     return Ok(String::new());
                 }
 
                 if attempt < MAX_RETRIES - 1 {
-                    // Invalidate clipboard on error
                     if let Ok(mut guard) = mexboard.clipboard.lock() {
                         *guard = None;
                     }
