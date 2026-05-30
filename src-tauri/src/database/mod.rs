@@ -14,9 +14,9 @@ pub struct Database {
     drizzle: Mutex<DrizzleState>,
 }
 
-struct DrizzleState {
-    db: Drizzle,
-    schema: Schema,
+pub(crate) struct DrizzleState {
+    pub(crate) db: Drizzle,
+    pub(crate) schema: Schema,
 }
 
 impl Database {

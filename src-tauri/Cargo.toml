@@ -42,6 +42,7 @@ chrono = "0.4"
 csscolorparser = "0.8"
 sha2 = "0.10"
 blake3 = "1.8.5"
+jittered-fractional-indexing = "0.1"
 drizzle = { git = "https://github.com/themixednuts/drizzle-rs", features = ["rusqlite"] }
 rusqlite = { version = "0.37", features = ["bundled"] }
 image = "0.25.10"

@@ -5,6 +5,7 @@ pub struct Clipboards {
     #[column(primary, autoincrement)]
     pub id: u32,
 
+    #[column(unique)]
     pub sort_order: String,
 
     pub content: Option<String>,

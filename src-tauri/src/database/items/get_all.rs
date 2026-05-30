@@ -1,6 +1,7 @@
 use super::super::utils::*;
 use super::super::Database;
 use crate::schema::*;
+use drizzle::sqlite::prelude::*;
 
 impl Database {
     pub fn get_all(&self, limit: u8, offset: u8) -> Result<Vec<SelectClipboards>, String> {
@@ -11,6 +12,7 @@ impl Database {
             .db
             .select(())
             .from(*clipboards)
+            .order_by(desc(clipboards.sort_order))
             .limit(limit as usize)
             .offset(offset as usize)
             .all()

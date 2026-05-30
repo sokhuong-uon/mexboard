@@ -3,6 +3,7 @@ mod check_duplication_by_hash;
 mod clear;
 mod delete;
 mod get_all;
+mod get_max_sort_order_internal;
 mod insert;
 mod insert_text;
 mod toggle_favorite;
