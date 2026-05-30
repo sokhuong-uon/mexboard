@@ -4,5 +4,6 @@ mod clear;
 mod delete;
 mod get_all;
 mod insert;
+mod insert_text;
 mod toggle_favorite;
 mod update_sort_order;

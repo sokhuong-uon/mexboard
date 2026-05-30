@@ -8,7 +8,7 @@ use drizzle::sqlite::rusqlite::Drizzle;
 use rusqlite::Connection;
 use std::sync::Mutex;
 pub(crate) use utils::*;
-mod structs;
+pub mod structs;
 
 pub struct Database {
     drizzle: Mutex<DrizzleState>,
